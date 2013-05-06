@@ -30,8 +30,9 @@
 %token <token>  TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token>  TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT TCOLON TSEMICOLON
 %token <token>  TPLUS TMINUS TMUL TDIV
+%token <token>  TCHAR TINT TFLOAT TDOUBLE TSHORT TLONG TSIGNED TUNSIGNED
 %token <token>  TCLASS TSTRUCT TPRIVATE TPROTECTED TPUBLIC TFIELD
-%token <token>  TSTATIC TEXTERN TCONST TMUTABLE
+%token <token>  TSTATIC TEXTERN TCONST TMUTABLE TVIRTUAL TTYPEDEF
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -84,9 +85,8 @@ class_var_decl : access_right TCOLON class_func_decl
 
 access_right : TPRIVATE | TPROTECTED | TPUBLIC;
 
-
 /**  function */
-func_decl : ident ident TLPAREN func_decl_args TRPAREN  
+func_decl : var_type ident TLPAREN func_decl_args TRPAREN  
           ;
 
 func_impl : func_decl block 
@@ -139,9 +139,31 @@ call_args : /*blank*/              { $$ = new ExpressionList(); }
 		  ;
 
 /**  variable */
-var_decl : ident ident             { $$ = new NVariableDeclaration(*$1, *$2); }
-		 | ident ident TEQUAL expr { $$ = new NVariableDeclaration(*$1, *$2, $4); }
+var_decl : var_type ident             { $$ = new NVariableDeclaration(*$1, *$2); }
+		 | var_type ident TEQUAL expr { $$ = new NVariableDeclaration(*$1, *$2, $4); }
 		 ;
+
+/**  type */
+var_type : type_sign type_len buildin_type
+         | ident
+         ;
+
+type_decl : TTYPEDEF ident TSEMICOLON
+          ; 
+
+buildin_type : TCHAR
+             | TINT
+             | TFLOAT
+             | TDOUBLE
+             ;
+
+type_len : TLONG
+         | TSHORT
+         ;
+           
+type_sign : TSIGNED
+          | TUNSIGNED
+          ;
 
 /**  base */
 numeric : TINTEGER { $$ = new NInteger(atol($1->c_str())); delete $1; }

@@ -33,6 +33,15 @@ extern "C" int yywrap() {}
 "*"						return TOKEN(TMUL);
 "/"						return TOKEN(TDIV);
 
+"char"                  return TOKEN(TCHAR);
+"int"                   return TOKEN(TINT);
+"float"                 return TOKEN(TFLOAT);
+"double"                return TOKEN(TDOUBLE);
+"short"                 return TOKEN(TSHORT);
+"long"                  return TOKEN(TLONG);
+"signed"                return TOKEN(TSIGNED);
+"unsigned"              return TOKEN(TUNSIGNED);
+
 "class"                 return TOKEN(TCLASS);
 "struct"                return TOKEN(TSTRUCT);
 "private"               return TOKEN(TPRIVATE);
@@ -44,6 +53,7 @@ extern "C" int yywrap() {}
 "const"                 return TOKEN(TCONST);
 "mutable"               return TOKEN(TMUTABLE);
 "virtual"               return TOKEN(TVIRTUAL);
+"typedef"               return TOKEN(TTYPEDEF);
 
 .						printf("Unknown token!\n"); yyterminate();
 

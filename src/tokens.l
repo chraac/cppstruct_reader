@@ -9,10 +9,6 @@ extern "C" int yywrap() {}
 
 %%
 
-[ \t\n]					;
-[a-zA-Z_][a-zA-Z0-9_]* 	SAVE_TOKEN; return TIDENTIFIER;
-[0-9]+\.[0-9]* 			SAVE_TOKEN; return TDOUBLE;
-[0-9]+					SAVE_TOKEN; return TINTEGER;
 "="						return TOKEN(TEQUAL);
 "=="					return TOKEN(TCEQ);
 "!="					return TOKEN(TCNE);
@@ -33,14 +29,14 @@ extern "C" int yywrap() {}
 "*"						return TOKEN(TMUL);
 "/"						return TOKEN(TDIV);
 
-"char"                  return TOKEN(TCHAR);
-"int"                   return TOKEN(TINT);
-"float"                 return TOKEN(TFLOAT);
-"double"                return TOKEN(TDOUBLE);
-"short"                 return TOKEN(TSHORT);
-"long"                  return TOKEN(TLONG);
-"signed"                return TOKEN(TSIGNED);
-"unsigned"              return TOKEN(TUNSIGNED);
+"char"                  return TOKEN(TRCHAR);
+"int"                   return TOKEN(TRINT);
+"float"                 return TOKEN(TRFLOAT);
+"double"                return TOKEN(TRDOUBLE);
+"short"                 return TOKEN(TRSHORT);
+"long"                  return TOKEN(TRLONG);
+"signed"                return TOKEN(TRSIGNED);
+"unsigned"              return TOKEN(TRUNSIGNED);
 
 "class"                 return TOKEN(TCLASS);
 "struct"                return TOKEN(TSTRUCT);
@@ -54,6 +50,11 @@ extern "C" int yywrap() {}
 "mutable"               return TOKEN(TMUTABLE);
 "virtual"               return TOKEN(TVIRTUAL);
 "typedef"               return TOKEN(TTYPEDEF);
+
+[ \t\n]					;
+[a-zA-Z_][a-zA-Z0-9_]* 	SAVE_TOKEN; return TIDENTIFIER;
+[0-9]+\.[0-9]* 			SAVE_TOKEN; return TDOUBLE;
+[0-9]+					SAVE_TOKEN; return TINTEGER;
 
 .						printf("Unknown token!\n"); yyterminate();
 

@@ -9,16 +9,69 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="gen_files">
+      <UniqueIdentifier>{95fce10a-0a69-46b5-89f0-c5ffc1392fb0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="gen_files">
-      <UniqueIdentifier>{95fce10a-0a69-46b5-89f0-c5ffc1392fb0}</UniqueIdentifier>
+    <Filter Include="Header Files\type">
+      <UniqueIdentifier>{7629d180-4f04-4d3c-b3f7-5a565dcb2e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\type">
+      <UniqueIdentifier>{75ad8ae5-8f44-48f4-a531-6f72d5beb946}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\parser.y" />
     <None Include="..\src\tokens.l" />
+    <None Include="..\src\parser.y" />
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\type\BuildInType.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\type\ComposeType.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\type\TypeBase.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\type\MemberVariable.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\type\MemberFunction.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\type\Variable.cpp">
+      <Filter>Source Files\type</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\baseDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\BuildInType.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\ComposeType.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\MemberBase.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\MemberFunction.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\MemberVariable.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\TypeBase.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\type\Variable.h">
+      <Filter>Header Files\type</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

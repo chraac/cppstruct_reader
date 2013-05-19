@@ -30,7 +30,7 @@
 %token <token>  TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token>  TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT TCOLON TSEMICOLON
 %token <token>  TPLUS TMINUS TMUL TDIV
-%token <token>  TCHAR TINT TFLOAT TDOUBLE TSHORT TLONG TSIGNED TUNSIGNED
+%token <token>  TRCHAR TRINT TRFLOAT TRDOUBLE TRSHORT TRLONG TRSIGNED TRUNSIGNED
 %token <token>  TCLASS TSTRUCT TPRIVATE TPROTECTED TPUBLIC TFIELD
 %token <token>  TSTATIC TEXTERN TCONST TMUTABLE TVIRTUAL TTYPEDEF
 
@@ -43,8 +43,8 @@
 %type <expr>    numeric expr 
 %type <varvec>  func_decl_args
 %type <exprvec> call_args
-%type <block>   program stmts block
-%type <stmt>    stmt var_decl func_impl
+%type <block>   program global_stmts local_stmts block
+%type <stmt>    global_stmt local_stmt var_decl func_impl
 %type <token>   comparison
 
 /* Operator precedence for mathematical operators */
@@ -148,21 +148,21 @@ var_type : type_sign type_len buildin_type
          | ident
          ;
 
-type_decl : TTYPEDEF ident TSEMICOLON
+type_decl : TTYPEDEF var_type ident TSEMICOLON
           ; 
 
-buildin_type : TCHAR
-             | TINT
-             | TFLOAT
-             | TDOUBLE
+buildin_type : TRCHAR
+             | TRINT
+             | TRFLOAT
+             | TRDOUBLE
              ;
 
-type_len : TLONG
-         | TSHORT
+type_len : TRLONG
+         | TRSHORT
          ;
            
-type_sign : TSIGNED
-          | TUNSIGNED
+type_sign : TRSIGNED
+          | TRUNSIGNED
           ;
 
 /**  base */

@@ -3,14 +3,17 @@
 #include "BuildInType.h"
 #include "MemberVariable.h"
 #include "MemberFunction.h"
+#include "scope_define.h"
 
 #include <vector>
+#include <memory>
 
+class scope_define;
 
 class TComposeType : public TTypeBase
 {
 public:
-    TComposeType(const stlstring &szTypeName);
+    TComposeType(const stlstring &szTypeName, scope_define *pDef);
     virtual ~TComposeType(void);
 
     virtual MemberVariables &GetMemberVars(
@@ -19,12 +22,6 @@ public:
         ACCESS_PRIVILEGE emPrivilege);
 
 protected:
-    MemberVariables m_cPublicVars;
-    MemberVariables m_cProtectedVars;
-    MemberVariables m_cPrivateVars;
-    
-    MemberFunctions m_cPublicFuncs;
-    MemberFunctions m_cProtectedFuncs;
-    MemberFunctions m_cPrivateFuncs;
+    std::unique_ptr<scope_define> m_pScope;
 };
 

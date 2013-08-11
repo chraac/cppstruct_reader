@@ -38,6 +38,17 @@ protected:
     LONG_TYPE m_emLong;
 };
 
+class TChar : public TBuildInType
+{
+public:
+    TChar(const SIGN_TYPE emSign = type_sign, 
+        const LONG_TYPE emLong = type_normal);
+
+    virtual ~TChar(){}
+
+    virtual stlstring GetStringValue(const U8 *pData)const override;
+    virtual U32 GetRawValue(const stlstring &szIn, U8 *pBuffer)const override;
+};
 
 class TInteger : public TBuildInType
 {
@@ -48,7 +59,7 @@ public:
     virtual ~TInteger(){}
 
     virtual stlstring GetStringValue(const U8 *pData)const override;
-    virtual U32 GetRawValue(const stlstring &szIn, const U8 *pBuffer)const override;
+    virtual U32 GetRawValue(const stlstring &szIn, U8 *pBuffer)const override;
 };
 
 class TFloat : public TBuildInType
@@ -58,7 +69,7 @@ public:
     virtual ~TFloat(){}
 
     virtual stlstring GetStringValue(const U8 *pData)const override;
-    virtual U32 GetRawValue(const stlstring &szIn, const U8 *pBuffer)const override;
+    virtual U32 GetRawValue(const stlstring &szIn, U8 *pBuffer)const override;
 };
 
 
@@ -69,5 +80,5 @@ public:
     virtual ~TDouble(){}
 
     virtual stlstring GetStringValue(const U8 *pData)const override;
-    virtual U32 GetRawValue(const stlstring &szIn, const U8 *pBuffer)const override;
+    virtual U32 GetRawValue(const stlstring &szIn, U8 *pBuffer)const override;
 };

@@ -22,11 +22,24 @@
     <Filter Include="Source Files\type">
       <UniqueIdentifier>{75ad8ae5-8f44-48f4-a531-6f72d5beb946}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\src\tokens.l" />
-    <None Include="..\src\parser.y" />
-    <None Include="ClassDiagram.cd" />
+    <Filter Include="Header Files\variable">
+      <UniqueIdentifier>{e498cd0d-2dd0-49fa-ac10-f1020f7e3f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\variable">
+      <UniqueIdentifier>{3a0336d0-daf9-44b7-ac81-a1533ed7a4f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\function">
+      <UniqueIdentifier>{007fb258-17b8-4348-9f14-32ea98f43bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\function">
+      <UniqueIdentifier>{b835d815-0c6b-4618-8f67-79a76a43b851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\symbol">
+      <UniqueIdentifier>{b3bbf74e-3353-49dd-b376-928a4fe7d6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\symbol">
+      <UniqueIdentifier>{71089a88-9e8a-4d5a-9e9c-e35a33a007c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\type\BuildInType.cpp">
@@ -38,14 +51,26 @@
     <ClCompile Include="..\src\type\TypeBase.cpp">
       <Filter>Source Files\type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\type\MemberVariable.cpp">
-      <Filter>Source Files\type</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\type\MemberFunction.cpp">
       <Filter>Source Files\type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\type\Variable.cpp">
-      <Filter>Source Files\type</Filter>
+    <ClCompile Include="..\src\function\MemberFunction.cpp">
+      <Filter>Source Files\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\variable\MemberVariable.cpp">
+      <Filter>Source Files\variable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\variable\Variable.cpp">
+      <Filter>Source Files\variable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ProgramBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\symbol\symbol_table.cpp">
+      <Filter>Source Files\symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scope_define.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,14 +89,33 @@
     <ClInclude Include="..\src\type\MemberFunction.h">
       <Filter>Header Files\type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\type\MemberVariable.h">
-      <Filter>Header Files\type</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\type\TypeBase.h">
       <Filter>Header Files\type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\type\Variable.h">
-      <Filter>Header Files\type</Filter>
+    <ClInclude Include="..\src\function\MemberFunction.h">
+      <Filter>Header Files\function</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\variable\MemberVariable.h">
+      <Filter>Header Files\variable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\variable\Variable.h">
+      <Filter>Header Files\variable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProgramBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\symbol\symbol_table.h">
+      <Filter>Header Files\symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scope_define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\src\tokens.l" />
+    <CustomBuild Include="..\src\parser.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

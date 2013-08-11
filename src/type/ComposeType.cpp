@@ -1,17 +1,15 @@
 #include "ComposeType.h"
+#include "scope_define.h"
+
 #include <algorithm>
 using namespace std;
 using namespace std::tr1;
 
 
-TComposeType::TComposeType(const stlstring &szTypeName)
+TComposeType::TComposeType(const stlstring &szTypeName, scope_define *pDef)
     :TTypeBase(szTypeName, 1)
-    ,m_cPublicVars(privilege_public)
-    ,m_cProtectedVars(privilege_protected)
-    ,m_cPrivateVars(privilege_private)
+    ,m_pScope(pDef)
 {
-//     for_each(m_arrMemberVars.begin(), m_arrMemberVars.end(), 
-//         [&s_nLength](BuildInTypeVar &member){s_nLength += member.GetLength();});
 }
 
 
@@ -21,38 +19,10 @@ TComposeType::~TComposeType(void)
 
 MemberVariables &TComposeType::GetMemberVars(ACCESS_PRIVILEGE emPrivilege)
 {
-    switch (emPrivilege)
-    {
-    case privilege_protected:
-        return m_cProtectedVars;
-        break;
-
-    case privilege_private:
-        return m_cPrivateVars;
-        break;
-
-    case privilege_public:
-    default:
-        break;
-    }
-    return m_cPublicVars;
+    return m_pScope->get_member_var(emPrivilege);
 }
 
 MemberFunctions &TComposeType::GetMemberFuncs(ACCESS_PRIVILEGE emPrivilege)
 {
-    switch (emPrivilege)
-    {
-    case privilege_protected:
-        return m_cProtectedFuncs;
-        break;
-
-    case privilege_private:
-        return m_cPrivateFuncs;
-        break;
-
-    case privilege_public:
-    default:
-        break;
-    }
-    return m_cPublicFuncs;
+    return m_pScope->get_member_func(emPrivilege);
 }

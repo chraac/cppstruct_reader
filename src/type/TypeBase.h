@@ -14,7 +14,7 @@ public:
 
     virtual stlstring GetStringValue(const U8 * /*pData*/)const
     {return stlstring();}
-    virtual U32 GetRawValue(const stlstring & /*szIn*/, const U8 * /*pBuffer*/)const
+    virtual U32 GetRawValue(const stlstring & /*szIn*/, U8 * /*pBuffer*/)const
     {return 0;}
 
     virtual stlstring GetTypeName()const{return m_szTypeName;}
@@ -24,4 +24,3 @@ protected:
     stlstring m_szTypeName;
     U32 m_nLength;
 };
-

@@ -1,8 +1,21 @@
+%skeleton "glr.cc"
+%require  "2.5"
+%debug 
+%error-verbose
+%locations
+%no-lines
+/*%glr-parser
+%expect-rr 1*/
+%defines 
+%define namespace "cpp_compiler"
+%define parser_class_name "cpp_parser"
+
 %{
-	#include "node.h"
-        #include <cstdio>
-        #include <cstdlib>
-	NBlock *programBlock; /* the top level root node of our final AST */
+	#include "variable.h"
+    #include "ProgramBlock.h"
+    #include <cstdio>
+    #include <cstdlib>
+	ProgramBlock program; /* the top level root node of our final AST */
 
 	extern int yylex();
 	void yyerror(const char *s) { std::printf("Error: %s\n", s);std::exit(1); }
@@ -10,27 +23,26 @@
 
 /* Represents the many different ways we can access our data */
 %union {
-	Node *node;
-	NBlock *block;
-	NExpression *expr;
-	NStatement *stmt;
-	NIdentifier *ident;
-	NVariableDeclaration *var_decl;
-	std::vector<NVariableDeclaration*> *varvec;
-	std::vector<NExpression*> *exprvec;
-	std::string *string;
-	int token;
+	TComposeType    *pComposeType;
+	TBuildInType    *pBuildinType;
+	Variable        *pVar_decl; 
+	MemberVariables *pMemberVar;
+	MemberFunctions *pmamberFunc;
+	stlstring       *string;
+    SIGN_TYPE       emSign;
+    LONG_TYPE       emLong;
+	int             token;
 }
 
 /* Define our terminal symbols (tokens). This should
    match our tokens.l lex file. We also define the node type
    they represent.
  */
-%token <string> TIDENTIFIER TINTEGER TDOUBLE
+%token <string> TIDENTIFIER TINTEGER TDOUBLE TRCHAR TRINT TRFLOAT TRDOUBLE
 %token <token>  TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token>  TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT TCOLON TSEMICOLON
 %token <token>  TPLUS TMINUS TMUL TDIV
-%token <token>  TRCHAR TRINT TRFLOAT TRDOUBLE TRSHORT TRLONG TRSIGNED TRUNSIGNED
+%token <token>  TRSHORT TRLONG TRSIGNED TRUNSIGNED
 %token <token>  TCLASS TSTRUCT TPRIVATE TPROTECTED TPUBLIC TFIELD
 %token <token>  TSTATIC TEXTERN TCONST TMUTABLE TVIRTUAL TTYPEDEF
 
@@ -39,13 +51,16 @@
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <ident>   ident
-%type <expr>    numeric expr 
-%type <varvec>  func_decl_args
-%type <exprvec> call_args
-%type <block>   program global_stmts local_stmts block
-%type <stmt>    global_stmt local_stmt var_decl func_impl
-%type <token>   comparison
+%type <expr>       numeric expr 
+%type <pVar_decl>  func_decl_args
+%type <exprvec>    call_args
+%type <block>      program global_stmts local_stmts block
+%type <stmt>       global_stmt local_stmt var_decl func_impl
+
+%type <string>     ident buildin_type
+%type <emSign>     type_sign
+%type <emLong>     type_len
+%type <token>      comparison
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS
@@ -139,16 +154,12 @@ call_args : /*blank*/              { $$ = new ExpressionList(); }
 		  ;
 
 /**  variable */
-var_decl : var_type ident             { $$ = new NVariableDeclaration(*$1, *$2); }
-		 | var_type ident TEQUAL expr { $$ = new NVariableDeclaration(*$1, *$2, $4); }
+var_decl : type_sign type_len buildin_type ident    { $$ = new Variable(*(program.GetBuildInType(*$3)), varType_Normal, *$2); }
+         | ident ident      { $$ = new Variable(*(program.GetComposeType(*$3)), varType_Normal, *$2); }
 		 ;
 
 /**  type */
-var_type : type_sign type_len buildin_type
-         | ident
-         ;
-
-type_decl : TTYPEDEF var_type ident TSEMICOLON
+type_decl : TTYPEDEF var_decl TSEMICOLON
           ; 
 
 buildin_type : TRCHAR
@@ -157,20 +168,20 @@ buildin_type : TRCHAR
              | TRDOUBLE
              ;
 
-type_len : TRLONG
-         | TRSHORT
+type_len : TRLONG      { $$ = type_long; }
+         | TRSHORT     { $$ = type_short; }
          ;
            
-type_sign : TRSIGNED
-          | TRUNSIGNED
+type_sign : TRSIGNED   { $$ = type_sign; }
+          | TRUNSIGNED { $$ = type_unsign; }
           ;
 
 /**  base */
-numeric : TINTEGER { $$ = new NInteger(atol($1->c_str())); delete $1; }
-		| TDOUBLE  { $$ = new NDouble(atof($1->c_str())); delete $1; }
+numeric : TINTEGER 
+		| TDOUBLE  /*{ $$ = new NDouble(atof($1->c_str())); delete $1; }*/
 		;
 
-ident : TIDENTIFIER { $$ = new NIdentifier(*$1); delete $1; }
+ident : TIDENTIFIER /*{ $$ = $1; }*/
 	  ;
 
 comparison : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE 

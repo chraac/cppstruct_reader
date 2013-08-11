@@ -1,10 +1,36 @@
+%option debug 
+%option nodefault 
+%option yylineno
+%option yyclass="cpp_scanner" 
+%option noyywrap 
+%option c++
+
 %{
-#include <string>
-#include "node.h"
-#include "parser.hpp"
-#define SAVE_TOKEN yylval.string = new std::string(yytext, yyleng)
-#define TOKEN(t) (yylval.token = t)
-extern "C" int yywrap() {}
+    #include "basedefine.h"
+    #include "node.h"
+    using namespace cpp_complier;
+    #include "cpp_parser.hpp"
+
+    
+    inline void step_pos(cpp_parser::location_type *yylloc, 
+        const int line, const int len_tok)
+    {
+        if (!yylloc)
+        {
+            return;
+        }
+
+        yylloc->step();
+        if (line != yylloc->begin.line)
+        {
+            yylloc->lines();
+        }
+        yylloc->columns(len_tok);
+    }
+    
+    #define TOKEN(t)    (yylval->token = t)
+    #define SAVE_LINENO step_pos(yylloc, lineno(), yyleng)
+    #define SAVE_TOKEN  SAVE_LINENO; yylval->string = new stlstring(yytext, yyleng)
 %}
 
 %%
@@ -29,10 +55,6 @@ extern "C" int yywrap() {}
 "*"						return TOKEN(TMUL);
 "/"						return TOKEN(TDIV);
 
-"char"                  return TOKEN(TRCHAR);
-"int"                   return TOKEN(TRINT);
-"float"                 return TOKEN(TRFLOAT);
-"double"                return TOKEN(TRDOUBLE);
 "short"                 return TOKEN(TRSHORT);
 "long"                  return TOKEN(TRLONG);
 "signed"                return TOKEN(TRSIGNED);
@@ -50,6 +72,11 @@ extern "C" int yywrap() {}
 "mutable"               return TOKEN(TMUTABLE);
 "virtual"               return TOKEN(TVIRTUAL);
 "typedef"               return TOKEN(TTYPEDEF);
+
+"char"               	SAVE_TOKEN; return TRCHAR;
+"int"               	SAVE_TOKEN; return TRINT;
+"float"               	SAVE_TOKEN; return TRFLOAT;
+"double"               	SAVE_TOKEN; return TRDOUBLE;
 
 [ \t\n]					;
 [a-zA-Z_][a-zA-Z0-9_]* 	SAVE_TOKEN; return TIDENTIFIER;

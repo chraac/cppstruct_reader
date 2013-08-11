@@ -56,18 +56,22 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\src\type;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\src\type;$(ProjectDir)..\src\variable;$(ProjectDir)..\src\function;$(ProjectDir)..\src\symbol;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>cd $(ProjectDir)..\src
-bison -d -oparser.cpp parser.y
-flex -otokens.cpp tokens.l parser.hpp
-</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -78,7 +82,7 @@ flex -otokens.cpp tokens.l parser.hpp
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\src\type;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src;$(ProjectDir)..\src\type;$(ProjectDir)..\src\variable;$(ProjectDir)..\src\function;$(ProjectDir)..\src\symbol;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,27 +97,49 @@ flex -otokens.cpp tokens.l parser.hpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\src\parser.y" />
-    <None Include="..\src\tokens.l" />
-    <None Include="ClassDiagram.cd" />
+    <CustomBuild Include="..\src\parser.y">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_bison -d -o$(ProjectDir)..\src\parser.cpp $(ProjectDir)..\src\parser.y -rall</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parser.cpp;parser.hpp;tokens.cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_bison -d -o$(ProjectDir)..\src\parser.cpp $(ProjectDir)..\src\parser.y -rall</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.cpp;parser.hpp;tokens.cpp</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\src\tokens.l">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_flex -o$(ProjectDir)..\src\tokens.cpp $(ProjectDir)..\src\tokens.l $(ProjectDir)..\src\parser.hpp</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parser.cpp;parser.hpp;tokens.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.cpp;parser.hpp;tokens.cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_flex -o$(ProjectDir)..\src\tokens.cpp $(ProjectDir)..\src\tokens.l $(ProjectDir)..\src\parser.hpp</Command>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\function\MemberFunction.cpp" />
+    <ClCompile Include="..\src\ProgramBlock.cpp" />
+    <ClCompile Include="..\src\scope_define.cpp" />
+    <ClCompile Include="..\src\symbol\symbol_table.cpp" />
     <ClCompile Include="..\src\type\BuildInType.cpp" />
     <ClCompile Include="..\src\type\ComposeType.cpp" />
     <ClCompile Include="..\src\type\MemberFunction.cpp" />
-    <ClCompile Include="..\src\type\MemberVariable.cpp" />
     <ClCompile Include="..\src\type\TypeBase.cpp" />
-    <ClCompile Include="..\src\type\Variable.cpp" />
+    <ClCompile Include="..\src\variable\MemberVariable.cpp" />
+    <ClCompile Include="..\src\variable\Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\baseDefine.h" />
+    <ClInclude Include="..\src\function\MemberFunction.h" />
+    <ClInclude Include="..\src\ProgramBlock.h" />
+    <ClInclude Include="..\src\scope_define.h" />
+    <ClInclude Include="..\src\symbol\symbol_table.h" />
     <ClInclude Include="..\src\type\BuildInType.h" />
     <ClInclude Include="..\src\type\ComposeType.h" />
     <ClInclude Include="..\src\type\MemberBase.h" />
     <ClInclude Include="..\src\type\MemberFunction.h" />
-    <ClInclude Include="..\src\type\MemberVariable.h" />
     <ClInclude Include="..\src\type\TypeBase.h" />
-    <ClInclude Include="..\src\type\Variable.h" />
+    <ClInclude Include="..\src\variable\MemberVariable.h" />
+    <ClInclude Include="..\src\variable\Variable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

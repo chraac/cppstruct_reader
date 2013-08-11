@@ -3,21 +3,29 @@
 #include "BuildInType.h"
 #include "ComposeType.h"
 
+typedef enum _VAR_TYPE
+{
+    varType_Normal = 0,
+    varType_Pointer,
+    varType_Reference,
+}VAR_TYPE;
 
 class Variable
 {
 public:
-    Variable(TBuildInType &buildInType, const stlstring &szName)
+    Variable(TBuildInType &buildInType, const VAR_TYPE emType, const stlstring &szName)
     {
         m_pBuildInType = &buildInType;
         m_pComposeType = NULL;
+        m_emType       = emType;
         m_szVarName    = szName;
     }
 
-    Variable(TComposeType &composeType, const stlstring &szName)
+    Variable(TComposeType &composeType, const VAR_TYPE emType, const stlstring &szName)
     {
         m_pBuildInType = NULL;
         m_pComposeType = &composeType;
+        m_emType       = emType;
         m_szVarName    = szName;
     }
 
@@ -35,6 +43,7 @@ protected:
     TBuildInType *m_pBuildInType;
     TComposeType *m_pComposeType;
 
+    VAR_TYPE  m_emType;
     stlstring m_szVarName;
 };
 

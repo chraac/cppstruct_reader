@@ -14,13 +14,16 @@ class MemberBase
 {
 public:
     typedef _Ty _TargeType;
-    typedef vector<_TargeType> MEMBER_ARRAY;
+    typedef std::vector<_TargeType> MEMBER_ARRAY;
 
 public:
     MemberBase(ACCESS_PRIVILEGE emPrivilege):m_emPrivilege(emPrivilege){}
     virtual ~MemberBase(void){}
 
     virtual void AddMember(const _TargeType &member){m_arrayMembers.push_back(member);}
+    virtual _TargeType &operator[](const U32 nIndex){return m_arrayMembers[nIndex];}
+    virtual U32  GetMemberCount()const{return m_arrayMembers.size();}
+
     virtual ACCESS_PRIVILEGE GetPrivilege()const{return m_emPrivilege;}
     virtual const MEMBER_ARRAY &GetMembers()const{return m_arrayMembers;}
 
